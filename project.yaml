@@ -1,0 +1,25 @@
+specVersion: 0.2.0
+name: Kintsugi
+version: 1.0.0
+description: SubQuery Project for Kintsugi parachain
+repository: https://github.com/SkyForger79/kintsugi_sbqry.git
+schema:
+  file: ./schema.graphql
+network:
+  endpoint: wss://api-kusama.interlay.io/parachain
+  genesisHash: '0x9af9a64e6e4da8e3073901c3ff0cc4c3aad9563786d89daf6ad820b6e14a0b8b'
+dataSources:
+  - kind: substrate/Runtime
+    startBlock: 8197766
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleBlock
+          kind: substrate/BlockHandler
+        - handler: handleEvent
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Deposit
+        - handler: handleCall
+          kind: substrate/CallHandler
