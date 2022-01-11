@@ -10,16 +10,19 @@ network:
   genesisHash: '0x9af9a64e6e4da8e3073901c3ff0cc4c3aad9563786d89daf6ad820b6e14a0b8b'
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 8197766
+    startBlock: 100000
     mapping:
-      file: ./dist/index.js
+      file: "./dist/index.js"
       handlers:
-        - handler: handleBlock
-          kind: substrate/BlockHandler
-        - handler: handleEvent
+        - handler: handleHistoryElement
+          kind: substrate/CallHandler
+        - handler: handleTransfer
           kind: substrate/EventHandler
           filter:
             module: balances
-            method: Deposit
-        - handler: handleCall
-          kind: substrate/CallHandler
+            method: Transfer
+        - handler: handleTransferKeepAlive
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: transfer_keep_alive
